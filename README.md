@@ -90,12 +90,6 @@ Contributions to this project are welcome! Here are some ways you can contribute
 - Suggest new features or improvements
 - Submit pull requests with bug fixes or new functionalities
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ---
 
 Enjoy watching the AI learn to play Snake, and feel free to experiment with the code to improve its performance!
