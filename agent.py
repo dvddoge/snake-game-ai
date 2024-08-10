@@ -115,3 +115,6 @@ def train():
                 record = score
 
             print('Game:', agent.rounds, 'Score:', score, 'Record:', record)
+
+if __name__ == '__main__':
+    train()
