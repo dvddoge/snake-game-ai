@@ -17,10 +17,10 @@ class Agent:
 
     def get_state(self, game):
         head = game.snake[0]
-        point_left = Point(head.x - 20, head.y)
-        point_right = Point(head.x + 20, head.y)
-        point_up = Point(head.x, head.y - 20)
-        point_down = Point(head.x, head.y + 20)
+        point_left = Point(head.x - 10, head.y)
+        point_right = Point(head.x + 10, head.y)
+        point_up = Point(head.x, head.y - 10)
+        point_down = Point(head.x, head.y + 10)
 
         direction_left = game.direction == Direction.LEFT
         direction_right = game.direction == Direction.RIGHT
@@ -56,8 +56,8 @@ class Agent:
 
         return np.array(state, dtype=int)
 
-    def remember(self, state, action, reward, next_state, done):
-        pass
+    def store_memory(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
 
     def train_long_memory(self):
         pass
