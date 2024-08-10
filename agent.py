@@ -14,6 +14,8 @@ class Agent:
         self.epsilon = 0
         self.gamma = 0
         self.memory = deque(maxlen=MEMORY)
+        self.model = None
+        self.trainer = None
 
     def get_state(self, game):
         head = game.snake[0]
@@ -59,11 +61,17 @@ class Agent:
     def store_memory(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
 
-    def train_long_memory(self):
-        pass
+    def experience_replay(self):
+        if len(self.memory) > BATCH_SIZE:
+            sample = random.sample(self.memory, BATCH_SIZE)
+        else:
+            sample = self.memory
+
+        states, actions, rewards, next_states, dones = zip(*sample)
+        self.trainer.train_batch(states, actions, rewards, next_states, dones)
 
     def train_short_memory(self, state, action, reward, next_state, done):
-        pass
+        self.trainer.train_batch([state], [action], [reward], [next_state], [done])
 
     def get_action(self, state):
         pass
