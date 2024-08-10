@@ -16,4 +16,10 @@ class Lienar_QNet(nn.Module):
         return x
     
     def save(self, file_name='model.pth'):
-        pass
+        model_folder_path = './model'
+        if not os.path.exists(model_folder_path):
+            os.makedirs(model_folder_path)
+
+        file_name = os.path.join(model_folder_path, file_name)
+        torch.save(self.state_dict(), file_name)
+
