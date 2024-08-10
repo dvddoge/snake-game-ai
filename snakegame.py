@@ -73,6 +73,14 @@ class SnakeGameAI:
         self.head = Point(x, y)
         return self.head
 
+    def _is_collision(self):
+        if self.head.x >= dis_width or self.head.x < 0 or self.head.y >= dis_height or self.head.y < 0:
+            return True
+        elif self.head in self.snake[1:]:
+            return True
+        else:
+            return False
+
 def our_snake(snake_block, snake_list):
     for x in snake_list:
         pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
