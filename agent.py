@@ -104,12 +104,12 @@ def train():
 
         agent.train_short_memory(state_old, final_move, reward, state_new, done)
 
-        agent.remember(state_old, final_move, reward, state_new, done)
+        agent.store_memory(state_old, final_move, reward, state_new, done)
 
         if done:
             game.reset()
             agent.rounds += 1
-            agent.train_long_memory()
+            agent.experience_replay()
 
             if score > record:
                 record = score
