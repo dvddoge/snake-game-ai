@@ -113,7 +113,7 @@ def train():
 
             if score > record:
                 record = score
-
+                agent.model.save()
             print('Game:', agent.rounds, 'Score:', score, 'Record:', record)
 
 if __name__ == '__main__':
