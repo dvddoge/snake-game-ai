@@ -15,12 +15,46 @@ class Agent:
         self.gamma = 0
         self.memory = deque(maxlen=MEMORY)
 
-
     def get_state(self, game):
-        pass
+        head = game.snake[0]
+        point_left = Point(head.x - 20, head.y)
+        point_right = Point(head.x + 20, head.y)
+        point_up = Point(head.x, head.y - 20)
+        point_down = Point(head.x, head.y + 20)
 
-    def select_action(self, state):
-        pass
+        direction_left = game.direction == Direction.LEFT
+        direction_right = game.direction == Direction.RIGHT
+        direction_up = game.direction == Direction.UP
+        direction_down = game.direction == Direction.DOWN
+
+        state = [
+            (direction_right and game.is_collision(point_right)) or
+            (direction_left and game.is_collision(point_left)) or
+            (direction_up and game.is_collision(point_up)) or
+            (direction_down and game.is_collision(point_down)),
+
+            (direction_up and game.is_collision(point_right)) or
+            (direction_down and game.is_collision(point_left)) or
+            (direction_left and game.is_collision(point_up)) or
+            (direction_right and game.is_collision(point_down)),
+
+            (direction_down and game.is_collision(point_right)) or
+            (direction_up and game.is_collision(point_left)) or
+            (direction_right and game.is_collision(point_up)) or
+            (direction_left and game.is_collision(point_down)),
+
+            direction_left,
+            direction_right,
+            direction_up,
+            direction_down,
+
+            game.food.x < game.head.x,  
+            game.food.x > game.head.x,  
+            game.food.y < game.head.y,  
+            game.food.y > game.head.y  
+        ]
+
+        return np.array(state, dtype=int)
 
     def remember(self, state, action, reward, next_state, done):
         pass
