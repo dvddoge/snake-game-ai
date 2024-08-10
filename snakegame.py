@@ -37,7 +37,12 @@ Point = namedtuple('Point', 'x, y')
 class SnakeGameAI:
     def __init__(self):
         self.direction = Direction.RIGHT
-        self.head = Point(dis_height / 2, dis_width / 2) 
+        self.head = Point(dis_width / 2, dis_height / 2)
+        self.snake = [self.head]
+        self.length_of_snake = 1
+        self.food = None
+        self.score = 0
+        self._place_food()
         
     def _move(self, action):
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
