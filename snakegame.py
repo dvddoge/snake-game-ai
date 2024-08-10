@@ -104,3 +104,21 @@ class SnakeGameAI:
             self._place_food()
 
         return reward, False, self.score
+    
+    def render(self):
+        dis.fill(white)
+        for point in self.snake:
+            pygame.draw.rect(dis, black, [point.x, point.y, snake_block, snake_block])
+        pygame.draw.rect(dis, green, [self.food.x, self.food.y, snake_block, snake_block])
+        text = font.render("Score: " + str(self.score), True, red)
+        dis.blit(text, [0, 0])
+        pygame.display.flip()
+
+    def reset(self):
+        self.direction = Direction.RIGHT
+        self.head = Point(dis_width / 2, dis_height / 2)
+        self.snake = [self.head]
+        self.length_of_snake = 1
+        self.food = None
+        self.score = 0
+        self._place_food()
