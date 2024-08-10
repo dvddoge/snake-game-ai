@@ -74,7 +74,18 @@ class Agent:
         self.trainer.train_batch([state], [action], [reward], [next_state], [done])
 
     def get_action(self, state):
-        pass
+        self.epsilon = 80 - self.rounds
+        move = [0, 0, 0]
+        if random.uniform(0, 1) < self.epsilon / 200:
+            move_index = random.choice([0, 1, 2])
+            move[move_index] = 1
+        else:
+            state_tensor = torch.tensor(state, dtype=torch.float)
+            predictions = self.model(state_tensor)
+            best_move = torch.argmax(predictions).items()
+            move[best_move] = 1
+
+        return move
 
 def train():
     plot_scores = []
