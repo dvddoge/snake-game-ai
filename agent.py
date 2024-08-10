@@ -108,6 +108,8 @@ def train():
 
         agent.store_memory(state_old, final_move, reward, state_new, done)
 
+        game.render()
+
         if done:
             game.reset()
             agent.rounds += 1
