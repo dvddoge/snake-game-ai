@@ -3,19 +3,21 @@ import random
 import numpy as np
 from collections import deque
 from snakegame import SnakeGameAI, Direction, Point
+from model import Lienar_QNet, QTrainer
+from helper import plot
 
 MEMORY = 100_000
 BATCH_SIZE = 1000
 LR = 0.001
 
 class Agent:
-    def _init_(self):
+    def __init__(self):
         self.rounds = 0
         self.epsilon = 0
-        self.gamma = 0
+        self.gamma = 0.9
         self.memory = deque(maxlen=MEMORY)
-        self.model = None
-        self.trainer = None
+        self.model = Lienar_QNet(11, 256, 3)
+        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
     def get_state(self, game):
         head = game.snake[0]
@@ -30,20 +32,20 @@ class Agent:
         direction_down = game.direction == Direction.DOWN
 
         state = [
-            (direction_right and game.is_collision(point_right)) or
-            (direction_left and game.is_collision(point_left)) or
-            (direction_up and game.is_collision(point_up)) or
-            (direction_down and game.is_collision(point_down)),
+            (direction_right and game._is_collision(point_right)) or
+            (direction_left and game._is_collision(point_left)) or
+            (direction_up and game._is_collision(point_up)) or
+            (direction_down and game._is_collision(point_down)),
 
-            (direction_up and game.is_collision(point_right)) or
-            (direction_down and game.is_collision(point_left)) or
-            (direction_left and game.is_collision(point_up)) or
-            (direction_right and game.is_collision(point_down)),
+            (direction_up and game._is_collision(point_right)) or
+            (direction_down and game._is_collision(point_left)) or
+            (direction_left and game._is_collision(point_up)) or
+            (direction_right and game._is_collision(point_down)),
 
-            (direction_down and game.is_collision(point_right)) or
-            (direction_up and game.is_collision(point_left)) or
-            (direction_right and game.is_collision(point_up)) or
-            (direction_left and game.is_collision(point_down)),
+            (direction_down and game._is_collision(point_right)) or
+            (direction_up and game._is_collision(point_left)) or
+            (direction_right and game._is_collision(point_up)) or
+            (direction_left and game._is_collision(point_down)),
 
             direction_left,
             direction_right,
@@ -68,10 +70,10 @@ class Agent:
             sample = self.memory
 
         states, actions, rewards, next_states, dones = zip(*sample)
-        self.trainer.train_batch(states, actions, rewards, next_states, dones)
+        self.trainer.train_step(states, actions, rewards, next_states, dones)
 
     def train_short_memory(self, state, action, reward, next_state, done):
-        self.trainer.train_batch([state], [action], [reward], [next_state], [done])
+        self.trainer.train_step([state], [action], [reward], [next_state], [done])
 
     def get_action(self, state):
         self.epsilon = 80 - self.rounds
@@ -82,7 +84,7 @@ class Agent:
         else:
             state_tensor = torch.tensor(state, dtype=torch.float)
             predictions = self.model(state_tensor)
-            best_move = torch.argmax(predictions).items()
+            best_move = torch.argmax(predictions).item()
             move[best_move] = 1
 
         return move
@@ -106,6 +108,8 @@ def train():
 
         agent.store_memory(state_old, final_move, reward, state_new, done)
 
+        game.render()
+
         if done:
             game.reset()
             agent.rounds += 1
@@ -113,5 +117,14 @@ def train():
 
             if score > record:
                 record = score
-
+                agent.model.save()
             print('Game:', agent.rounds, 'Score:', score, 'Record:', record)
+
+            plot_scores.append(score)
+            total_score += score
+            mean_score = total_score / agent.rounds
+            plot_mean_scores.append(mean_score)
+            plot(plot_scores, plot_mean_scores)
+            
+if __name__ == '__main__':
+    train()
