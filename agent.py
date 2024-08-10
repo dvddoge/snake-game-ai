@@ -70,10 +70,10 @@ class Agent:
             sample = self.memory
 
         states, actions, rewards, next_states, dones = zip(*sample)
-        self.trainer.train_batch(states, actions, rewards, next_states, dones)
+        self.trainer.train_step(states, actions, rewards, next_states, dones)
 
     def train_short_memory(self, state, action, reward, next_state, done):
-        self.trainer.train_batch([state], [action], [reward], [next_state], [done])
+        self.trainer.train_step([state], [action], [reward], [next_state], [done])
 
     def get_action(self, state):
         self.epsilon = 80 - self.rounds
@@ -84,7 +84,7 @@ class Agent:
         else:
             state_tensor = torch.tensor(state, dtype=torch.float)
             predictions = self.model(state_tensor)
-            best_move = torch.argmax(predictions).items()
+            best_move = torch.argmax(predictions).item()
             move[best_move] = 1
 
         return move
