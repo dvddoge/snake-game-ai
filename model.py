@@ -30,3 +30,6 @@ class QTrainer:
         self.model = model
         self.optimazer = optim.Adam(model.parameters(), lr=self.lr)
         self.criterion = nn.MSELoss()
+
+    def train_step(self, state, action, reward, next_state, done):
+        pass

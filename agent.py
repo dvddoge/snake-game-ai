@@ -3,6 +3,7 @@ import random
 import numpy as np
 from collections import deque
 from snakegame import SnakeGameAI, Direction, Point
+from model import Lienar_QNet, QTrainer
 
 MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -12,10 +13,10 @@ class Agent:
     def _init_(self):
         self.rounds = 0
         self.epsilon = 0
-        self.gamma = 0
+        self.gamma = 0.9
         self.memory = deque(maxlen=MEMORY)
-        self.model = None
-        self.trainer = None
+        self.model = Lienar_QNet(11, 256, 3)
+        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
     def get_state(self, game):
         head = game.snake[0]
