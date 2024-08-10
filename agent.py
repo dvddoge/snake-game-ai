@@ -32,20 +32,20 @@ class Agent:
         direction_down = game.direction == Direction.DOWN
 
         state = [
-            (direction_right and game.is_collision(point_right)) or
-            (direction_left and game.is_collision(point_left)) or
-            (direction_up and game.is_collision(point_up)) or
-            (direction_down and game.is_collision(point_down)),
+            (direction_right and game._is_collision(point_right)) or
+            (direction_left and game._is_collision(point_left)) or
+            (direction_up and game._is_collision(point_up)) or
+            (direction_down and game._is_collision(point_down)),
 
-            (direction_up and game.is_collision(point_right)) or
-            (direction_down and game.is_collision(point_left)) or
-            (direction_left and game.is_collision(point_up)) or
-            (direction_right and game.is_collision(point_down)),
+            (direction_up and game._is_collision(point_right)) or
+            (direction_down and game._is_collision(point_left)) or
+            (direction_left and game._is_collision(point_up)) or
+            (direction_right and game._is_collision(point_down)),
 
-            (direction_down and game.is_collision(point_right)) or
-            (direction_up and game.is_collision(point_left)) or
-            (direction_right and game.is_collision(point_up)) or
-            (direction_left and game.is_collision(point_down)),
+            (direction_down and game._is_collision(point_right)) or
+            (direction_up and game._is_collision(point_left)) or
+            (direction_right and game._is_collision(point_up)) or
+            (direction_left and game._is_collision(point_down)),
 
             direction_left,
             direction_right,
