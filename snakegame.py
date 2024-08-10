@@ -44,6 +44,12 @@ class SnakeGameAI:
         self.score = 0
         self._place_food()
         
+    def _place_food(self):
+        self.food = Point(
+            round(random.randrange(0, dis_width - snake_block) / 10) * 10,
+            round(random.randrange(0, dis_height - snake_block) / 10) * 10
+        )
+
     def _move(self, action):
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
         idx = clock_wise.index(self.direction)
