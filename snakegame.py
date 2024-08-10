@@ -37,7 +37,12 @@ Point = namedtuple('Point', 'x, y')
 class SnakeGameAI:
     def __init__(self):
         self.direction = Direction.RIGHT
-        self.head = Point(dis_height / 2, dis_width / 2) 
+        self.head = Point(dis_width / 2, dis_height / 2)
+        self.snake = [self.head]
+        self.length_of_snake = 1
+        self.food = None
+        self.score = 0
+        self._place_food()
         
     def _move(self, action):
         clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
@@ -68,13 +73,14 @@ class SnakeGameAI:
         self.head = Point(x, y)
         return self.head
 
-def our_snake(snake_block, snake_list):
-    for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+    def _is_collision(self):
+        if self.head.x >= dis_width or self.head.x < 0 or self.head.y >= dis_height or self.head.y < 0:
+            return True
+        elif self.head in self.snake[1:]:
+            return True
+        else:
+            return False
 
-def message(msg, color):
-    mesg = font.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 6, dis_height / 3])
 
 def gameLoop(frame_iteration):
     game_over = False
