@@ -10,7 +10,11 @@ LR = 0.001
 
 class Agent:
     def _init_(self):
-        self.game = SnakeGameAI()
+        self.rounds = 0
+        self.epsilon = 0
+        self.gamma = 0
+        self.memory = deque(maxlen=MEMORY)
+
 
     def get_state(self, game):
         pass
@@ -28,3 +32,14 @@ class Agent:
         pass
 
     def get_action(self, state):
+        pass
+    
+def train():
+    plot_scores = []
+    plot_mean_scores = []
+    total_score = 0
+    record = 0
+    agent = Agent()
+    game = SnakeGameAI()
+    while True:
+        state_old = agent.get_state(game)
