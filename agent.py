@@ -11,7 +11,7 @@ BATCH_SIZE = 1000
 LR = 0.001
 
 class Agent:
-    def _init_(self):
+    def __init__(self):
         self.rounds = 0
         self.epsilon = 0
         self.gamma = 0.9
