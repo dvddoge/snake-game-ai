@@ -28,12 +28,12 @@ class Agent:
     def train_long_memory(self):
         pass
 
-    def train_short_memory(self):
+    def train_short_memory(self, state, action, reward, next_state, done):
         pass
 
     def get_action(self, state):
         pass
-    
+
 def train():
     plot_scores = []
     plot_mean_scores = []
@@ -43,3 +43,12 @@ def train():
     game = SnakeGameAI()
     while True:
         state_old = agent.get_state(game)
+
+        final_move = agent.get_action(state_old)
+
+        reward, done, score = game.play_step(final_move)
+        state_new = agent.get_state(game)
+
+        agent.train_short_memory(state_old, final_move, reward, state_new, done)
+
+        agent.remember(state_old, final_move, reward, state_new, done)
